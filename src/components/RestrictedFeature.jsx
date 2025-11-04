@@ -6,8 +6,21 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { Lock } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { checkPermission } from '../../lib/utils';
 
-export function RestrictedFeature({ children, message = "You don't have permission to access this feature" }) {
+export function RestrictedFeature({ 
+  children, 
+  action, 
+  resource,
+  message = "You don't have permission to access this feature" 
+}) {
+  const { user } = useAuth();
+  const hasPermission = checkPermission(user, action, resource);
+
+  if (hasPermission) {
+    return children;
+  }
   return (
     <TooltipProvider>
       <Tooltip>

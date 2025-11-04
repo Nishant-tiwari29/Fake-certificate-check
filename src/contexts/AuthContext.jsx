@@ -26,12 +26,21 @@ export const AuthProvider = ({ children }) => {
     window.location.href = '/';
   };
 
-  const register = async (userData) => {
+  const register = async (userData, role) => {
+    // Validate role
+    const validRoles = ['institute', 'student', 'verifier'];
+    if (!validRoles.includes(role)) {
+      throw new Error('Invalid role specified');
+    }
+
     // In a real app, this would make an API call
     const newUser = {
       ...userData,
       id: Date.now().toString(),
-      created_at: new Date().toISOString()
+      role: role,
+      created_at: new Date().toISOString(),
+      verified: role === 'institute' ? false : true, // Institutes need admin approval
+      profileComplete: false
     };
     
     // Store in localStorage as a simple database
@@ -39,8 +48,10 @@ export const AuthProvider = ({ children }) => {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     
-    // Auto login after registration
-    login(newUser);
+    // Auto login after registration (except for institutes that need verification)
+    if (role !== 'institute' || newUser.verified) {
+      login(newUser);
+    }
     return newUser;
   };
 

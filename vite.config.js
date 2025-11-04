@@ -4,7 +4,9 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Fake-certificate-check/',
+  // Use relative base so the built site can be hosted on GitHub Pages or any static host
+  // without needing an absolute repo path. This makes deployment simpler.
+  base: './',
   optimizeDeps: {
     esbuildOptions: {
       loader: {
