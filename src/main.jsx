@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import Layout from '@/layout.jsx'
@@ -23,7 +23,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
+        <Router>
           <Layout>
             <Routes>
               <Route
@@ -65,7 +65,7 @@ function App() {
               />
             </Routes>
           </Layout>
-        </BrowserRouter>
+        </Router>
       </AuthProvider>
     </QueryClientProvider>
   )
